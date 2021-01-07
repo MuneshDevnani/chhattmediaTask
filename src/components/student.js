@@ -1,87 +1,84 @@
 import React, { Component } from 'react';
 import '../App.css';
+import ListItems from './list-items'
 
 class Student extends Component {
-  constructor(props) {
+  constructor(props){
     super(props);
-
     this.state = {
-      userinput: '',
-      list: [],
-      studentname: ''
+      items:[],
+      currentItem:{
+        text:'',
+        key:''
+      }
     }
-    this.changeuserinput = this.changeuserinput.bind(this);
-    this.onChangeStudentname = this.onChangeStudentname.bind(this);
-
+    this.addItem = this.addItem.bind(this);
+    this.handleInput = this.handleInput.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
+    this.setUpdate = this.setUpdate.bind(this);
   }
-  changeuserinput(input) {
+  addItem(e){
+    e.preventDefault();
+    const newItem = this.state.currentItem;
+    if(newItem.text !=="" ){
+      const items = [...this.state.items, newItem];
     this.setState({
-      userinput: input
-    });
-  }
-  addToList(input) {
-    if (this.state.userinput !== "") {
-      let listArray = this.state.list;
-
-      listArray.push(input)
-      this.setState({
-        list: listArray,
-        userinput: ''
-      })
-    }
-    else {
-      console.log("please add student");
+      items: items,
+      deletedItem:[],
+      currentItem:{
+        text:'',
+        key:''
+      }
+    })
     }
   }
-  removeFromList(index) {
-    console.log("hello");
-    let listArray = this.state.list;
-
-    listArray.pop(index)
-    //   this.setState({
-    //     list: listArray,
-    //     userinput: ''
-    //   })
-  }
-  onChangeStudentname(e) {
+  handleInput(e){
     this.setState({
-      studentname: e.target.value
-    });
+      currentItem:{
+        text: e.target.value,
+        key: Date.now()
+      }
+    })
   }
+  
+  deleteItem(key){
+    const filteredItems= this.state.items.filter(item =>
+      item.key!==key);
+    this.setState({
+      items: filteredItems
+    })
+  }
+  setUpdate(text,key){
+    console.log("items:"+this.state.items);
+    const items = this.state.items;
+    items.map(item=>{      
+      if(item.key===key){
+        console.log(item.key +"    "+key)
+        item.text= text;
+      }
+    })
+    this.setState({
+      items: items
+    })
+  }
+  
   render() {
     return (
       <div className="wrapper fadeInDown">
         <div id="formContent">
           <div className="fadeIn first">
             <h3>Add Student</h3>
-          </div>
-          <input
-            onChange={(e) => this.changeuserinput(e.target.value)}
-            value={this.state.userinput}
-            type="text"
-            className="fadeIn second"
-            name="name"
-            placeholder="Add Student" />
-          <div ref="userInput" className="fadeIn third"
-            required
-            className="select form-control"
-            value={this.state.studentname}
-            onChange={this.onChangeStudentname}
-          >
-            {
-              this.state.list.map(function (std, index) {
-                return <li onClick={() => this.removeFromList(std)}
-                  key={index}
-                  value={std}>{std}
+        <form id="to-do-form" onSubmit={this.addItem}>
+          <input type="text" id="login" className="fadeIn second" name="login" placeholder="Add Student" value= {this.state.currentItem.text} onChange={this.handleInput}></input>
+          <button type="submit" className="btn btn-primary fadeIn fourth">Add</button>
+        </form>
 
-                  <button className="btn btn-danger" onClick={() => this.removeFromList(index)}><i className="fa fa-remove" /></button>
-                </li>
-              })
-            }
-          </div>
-          <button className="btn btn-primary fadeIn fourth" onClick={() => this.addToList(this.state.userinput)}>Add task</button>
-        </div>
+        <p>{this.state.items.text}</p>
+
+          <ListItems items={this.state.items} deleteItem={this.deleteItem} setUpdate={this.setUpdate}/>
       </div>
+      </div>
+    </div>
     )
   }
 }

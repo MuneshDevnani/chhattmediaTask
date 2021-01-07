@@ -142,25 +142,19 @@ html {
     color: #cccccc;
   }
  button {
-     margin-bottom: 20px;
-     margin-top: 10px;
+  font-size: 16px;
+  height: 55px;
+  width: 55px;
  }
- .select{
-    background-color: #f6f6f6;
-    border: none;
-    color: #0d0d0d;
-    text-decoration: none;
-    display: inline-block;
-    width: 85%;
- }
-  
+  i{
+    font-size: 1.5em;
+    height: 55px;
+    width: 55px;
+    color: rgba(255, 0, 0, 0.842);
+  }
  h3 {
     margin-bottom: 20px;
     margin-top: 10px;
-}
-li{
-    list-style-type: none;
-    padding: 20px;
 }
   
   /* ANIMATIONS */
