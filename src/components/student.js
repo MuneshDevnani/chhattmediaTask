@@ -21,11 +21,14 @@ class Student extends Component {
   addItem(e){
     e.preventDefault();
     const newItem = this.state.currentItem;
-    if(newItem.text !=="" ){
+    const avail = this.state.items.map(item=>{
+      return item.text
+    })
+
+    if(newItem.text !=="" && !avail.includes(newItem.text) ){
       const items = [...this.state.items, newItem];
     this.setState({
       items: items,
-      deletedItem:[],
       currentItem:{
         text:'',
         key:''
@@ -51,13 +54,20 @@ class Student extends Component {
       items: filteredItems,
       trash: deletedItems
     })
-    console.log(this.state.items);
   }
 
   unDo(){
+    const avail = this.state.items.map(item=>{
+      return item.text
+    })
+    const deleted = this.state.trash.map(item=>{
+      return item.text
+    })
+    if(!avail.includes(deleted[0])){
     this.setState({
       items: [...this.state.items ,...this.state.trash]
     })
+  }
   }
 
   setUpdate(text,key){
