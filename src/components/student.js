@@ -7,6 +7,7 @@ class Student extends Component {
     super(props);
     this.state = {
       items:[],
+      trash:[],
       currentItem:{
         text:'',
         key:''
@@ -44,10 +45,21 @@ class Student extends Component {
   deleteItem(key){
     const filteredItems= this.state.items.filter(item =>
       item.key!==key);
+    const deletedItems= this.state.items.filter(item =>
+        item.key===key);
     this.setState({
-      items: filteredItems
+      items: filteredItems,
+      trash: deletedItems
+    })
+    console.log(this.state.items);
+  }
+
+  unDo(){
+    this.setState({
+      items: [...this.state.items ,...this.state.trash]
     })
   }
+
   setUpdate(text,key){
     console.log("items:"+this.state.items);
     const items = this.state.items;
@@ -75,7 +87,8 @@ class Student extends Component {
 
         <p>{this.state.items.text}</p>
 
-          <ListItems items={this.state.items} deleteItem={this.deleteItem} setUpdate={this.setUpdate}/>
+          <ListItems items={this.state.items} deleteItem={this.deleteItem} setUpdate={this.setUpdate} unDo={this.unDo}/>
+          <button onClick={()=> this.unDo()}>undo</button>
       </div>
       </div>
     </div>

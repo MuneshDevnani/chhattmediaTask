@@ -14,12 +14,13 @@ function ListItems(props){
         <i className="fa fa-trash" onClick={() => {
             props.deleteItem(item.key)
         }}  />
+       
         </span>
      </p>
-     
     </div>})
     return <div>
         {listItems}
+       
     </div>;
   }
 
